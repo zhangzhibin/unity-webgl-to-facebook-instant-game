@@ -1,0 +1,14 @@
+{
+  "instant_games": {
+    "platform_version": "RICH_GAMEPLAY",
+    "custom_update_templates": {
+      "play_turn": {
+        "example": "Devon just finished his game and scored 999m"
+      },
+      "new_match": {
+        "example": "Devon want to play with you"
+      }
+    },
+    "navigation_menu_version":"NAV_FLOATING"
+  }
+}
