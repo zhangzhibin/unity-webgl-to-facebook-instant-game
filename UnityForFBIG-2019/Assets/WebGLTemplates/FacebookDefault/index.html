@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>%UNITY_WEB_NAME%</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+
+    <!-- 添加Facebook小游戏SDK -->
+    <script src="https://connect.facebook.net/en_US/fbinstant.6.3.js"></script>
+
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="%UNITY_WEBGL_LOADER_URL%"></script>
+
+  </head>
+  <body>
+    <div class="webgl-content" style="width: 100%; height: 100%">
+      <div id="unityContainer" style="width: 100%; height: 100%"></div>
+    </div>
+    <script>
+      // 启动unity
+      function startUnity(){
+        window.unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BUILD_URL%", {
+          compatibilityCheck: function (unityInstance, onsuccess, onerror) {
+            // if (!UnityLoader.SystemInfo.hasWebGL) {
+            //   unityInstance.popup("Your browser does not support WebGL",
+            //     [{text: "OK", callback: onerror}]);
+            // } else if (UnityLoader.SystemInfo.mobile) {
+            //   unityInstance.popup("Please note that Unity WebGL is not currently supported on mobiles. Press OK if you wish to continue anyway.",
+            //     [{text: "OK", callback: onsuccess}]);
+            // } else if (["Edge", "Firefox", "Chrome", "Safari"].indexOf(UnityLoader.SystemInfo.browser) == -1) {
+            //   unityInstance.popup("Please note that your browser is not currently supported for this Unity WebGL content. Press OK if you wish to continue anyway.",
+            //     [{text: "OK", callback: onsuccess}]);
+            // } else {
+            //   onsuccess();
+            // }
+            onsuccess();
+          },
+          onProgress: UnityProgress
+        });
+        unityInstance.SetFullscreen(1);
+      }
+
+      // 启动 facebook初始化
+      console.log("=====> FBInstant.initializeAsync");
+      FBInstant.initializeAsync()
+        .then(function () {
+          console.info("=====> FBInstant.startGameAsync");
+          // 告诉Facebook加载完毕，可以进入游戏了
+          // 也可以在这里加载Unity游戏代码和资源，然后再加载完后再进入游戏         
+          FBInstant.startGameAsync().then(function() {
+            console.info("=====> screen size: " + `${screen.width} x ${screen.height}`);
+            console.info("=====> window size: " + `${window.innerWidth} x ${window.innerHeight}`)
+            
+            // 开始加载Unity游戏代码和资源
+            startUnity();
+          });
+        });
+    </script>
+  </body>
+</html>
